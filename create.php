@@ -4,7 +4,6 @@
 
     
     <h1>testando agenda</h1>
-    <i class="fas fa-eye"></i>
 
 
 <?php
