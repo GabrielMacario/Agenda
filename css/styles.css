@@ -65,3 +65,31 @@
     margin: 0 auto;
     margin-top: 30px;
 }
+
+/* Show */
+
+#view-contact-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#back-btn-div {
+    display: block;
+    width: 500px;
+    margin: 30px auto 0;
+}
+
+#back-btn {
+    border: 1px solid #007BFF;
+    color: #007BFF;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+a {
+    text-decoration: none;
+}
