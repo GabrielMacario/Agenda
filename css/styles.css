@@ -9,6 +9,10 @@
 
 /* Home */
 
+.delete-form {
+    display: inline-block;
+}
+
 #contacts-table {
     max-width: 800px;
     margin: 0 auto;
@@ -93,3 +97,29 @@
 a {
     text-decoration: none;
 }
+
+/* .form-group {
+    font-weight: bold;
+} */
+
+.btn-primary {
+    margin-top: 20px;
+}
+
+/* Create */
+
+#create-form,
+#edit-form {
+    max-width: 500px;
+    margin: 0 auto;
+ }
+
+ /* Mobile */
+
+ @media (max-width: 480px) {
+
+    #home-link {
+        display: none;
+    }
+
+ }
