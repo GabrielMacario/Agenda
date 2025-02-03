@@ -12,47 +12,56 @@ $data = $_POST;
 if (!empty($data)) {
 
     if ($data['type'] === 'create') {
-        
         $name = $data['name'];
         $phone = $data['phone'];
         $observations = $data['observations'];
 
-            $queryId = 'SELECT MAX(id_exibido) + 1 as next_id FROM contacts';
+        $queryId = 'SELECT MAX(id_exibido) + 1 as next_id FROM contacts';
+        $stmtID = $conn->prepare($queryId);
+        $stmtID->execute();
+        $nextId = $stmtID->fetch();
+        $idExibido = $nextId['next_id'];
 
-            $stmtID = $conn->prepare($queryId);
+        if ($idExibido == 0 || $idExibido == null) {
+            $idExibido = 1;
+        }
 
-            $stmtID->execute();
+        $queryNumber = 'SELECT id_exibido FROM contacts ORDER BY id_exibido ASC';
+        $stmtID = $conn->prepare($queryNumber);
+        $stmtID->execute();
+        $totalId = $stmtID->fetchAll(PDO::FETCH_ASSOC);
 
-            $nextId = $stmtID->fetch();
+        for ($i = 1; $i <= count($totalId); $i++) {
+            $idAtual = (int)$totalId[$i - 1]['id_exibido'];
 
-            $idAssoc = $nextId['next_id'];            
-            
-            
+            if ($i != $idAtual) {
+                $idExibido = $i;
+                break;
+            }
+        }
+
         $query = 'INSERT INTO contacts (id_exibido, name, phone, observations) VALUES (:id_exibido, :name, :phone, :observations)';
         $stmt = $conn->prepare($query);
 
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':observations', $observations);
-        $stmt->bindParam(':id_exibido', $idAssoc);
+        $stmt->bindParam(':id_exibido', $idExibido);
 
 
         try {
 
             $stmt->execute();
             $_SESSION['msg'] = 'Contato criado com sucesso';
-
-
-        } catch  (PDOException $e) {
+        } catch (PDOException $e) {
             // erro na conexão
             $erro = $e->getMessage();
             echo 'Erro $erro';
         }
-
     } elseif ($data['type'] === 'edit') {
 
         // edit
-        
+
         $name = $data['name'];
         $phone = $data['phone'];
         $observations = $data['observations'];
@@ -73,13 +82,11 @@ if (!empty($data)) {
 
             $stmt->execute();
             $_SESSION['msg'] = 'Contato atualizado com sucesso';
-
-        } catch  (PDOException $e) {
+        } catch (PDOException $e) {
             // erro na conexão
             $erro = $e->getMessage();
             echo 'Erro $erro';
         }
-
     } elseif ($data['type'] === 'delete') {
 
         $id = $data['id'];
@@ -94,18 +101,16 @@ if (!empty($data)) {
 
             $stmt->execute();
             $_SESSION['msg'] = 'Contato deletado com sucesso';
-
-        } catch  (PDOException $e) {
+        } catch (PDOException $e) {
             // erro na conexão
             $erro = $e->getMessage();
             echo 'Erro $erro';
-        }        
+        }
     }
 
     // redirect home
 
     header('Location:' . $BASE_URL . '../index.php');
-
 } else {
 
     // Show
@@ -129,7 +134,6 @@ if (!empty($data)) {
         $stmt->execute();
 
         $contact = $stmt->fetch();
-        
     } else {
 
         // retorna todos os contatos
