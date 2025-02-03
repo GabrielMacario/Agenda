@@ -16,17 +16,25 @@ if (!empty($data)) {
         $name = $data['name'];
         $phone = $data['phone'];
         $observations = $data['observations'];
-        
+
+            $queryId = 'SELECT MAX(id_exibido) + 1 as next_id FROM contacts';
+
+            $stmtID = $conn->prepare($queryId);
+
+            $stmtID->execute();
+
+            $nextId = $stmtID->fetch();
+
+            $idAssoc = $nextId['next_id'];            
+            
+            
         $query = 'INSERT INTO contacts (id_exibido, name, phone, observations) VALUES (:id_exibido, :name, :phone, :observations)';
         $stmt = $conn->prepare($query);
 
-        $stmt->bindParam(':id_exibido', $nextId);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':observations', $observations);
-
-        print_r($nextId);
-
+        $stmt->bindParam(':id_exibido', $idAssoc);
 
 
         try {
@@ -121,6 +129,7 @@ if (!empty($data)) {
         $stmt->execute();
 
         $contact = $stmt->fetch();
+        
     } else {
 
         // retorna todos os contatos
