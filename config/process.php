@@ -150,7 +150,6 @@ if (!empty($data)) {
     }
 }
 
-
 // Fechar conexão
 
 $conn = null;
