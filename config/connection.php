@@ -1,9 +1,9 @@
 <?php
 
-$host = "localhost";
-$dbname = "agenda";
-$user = "root";
-$pass = "";
+$host = "mintcream-hare-480652.hostingersite.com";
+$dbname = "u865241405_agenda";
+$user = "u865241405_root";
+$pass = "q3Qc0?@O#D~5";
 
 try {
 
